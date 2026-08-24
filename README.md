@@ -11,6 +11,18 @@
 
 ## About
 
+> **tecfu fork** — install this branch with:
+>
+> ```sh
+> cargo install --git https://github.com/tecfu/alacritty --branch tecfu-trim-selection alacritty
+> ```
+>
+> Patches on top of upstream `master`:
+> - Trim trailing blank cells from wrapped lines when copying (no margin
+>   whitespace / spurious spaces at soft-wrap joins in copied selections)
+> - Fix keyboard input dying after leaving Vi mode on X11 with IMEs like
+>   fcitx5 (upstream issue #8907)
+
 Alacritty is a modern terminal emulator that comes with sensible defaults, but
 allows for extensive [configuration](#configuration). By integrating with other
 applications, rather than reimplementing their functionality, it manages to
