@@ -613,9 +613,10 @@ impl<T> Term<T> {
             }
         }
 
+        // NOTE(tecfu): check WRAPLINE on the physical last column; line_length is
+        // now trimmed of trailing blanks even when the line wraps.
         if cols.end >= self.columns() - 1
-            && (line_length.0 == 0
-                || !self.grid[line][line_length - 1].flags.contains(Flags::WRAPLINE))
+            && !self.grid[line][Column(self.columns() - 1)].flags.contains(Flags::WRAPLINE)
         {
             text.push('\n');
         }
@@ -2606,7 +2607,8 @@ mod tests {
         if let Some(s) = term.selection.as_mut() {
             s.update(Point { line: Line(2), column: Column(4) }, Side::Right);
         }
-        assert_eq!(term.selection_to_string(), Some(String::from("\"aaa\"\n\n aaa ")));
+        // Trailing blank cell of a wrapped line is trimmed.
+        assert_eq!(term.selection_to_string(), Some(String::from("\"aaa\"\n\n aaa")));
 
         // A wrapline.
         term.selection = Some(Selection::new(
@@ -2617,7 +2619,8 @@ mod tests {
         if let Some(s) = term.selection.as_mut() {
             s.update(Point { line: Line(3), column: Column(4) }, Side::Right);
         }
-        assert_eq!(term.selection_to_string(), Some(String::from(" aaa  aaa\"")));
+        // Wrapped-line trailing blank is trimmed, so the join has a single space.
+        assert_eq!(term.selection_to_string(), Some(String::from(" aaa aaa\"")));
     }
 
     #[test]

@@ -271,10 +271,8 @@ impl LineLength for grid::Row<Cell> {
     fn line_length(&self) -> Column {
         let mut length = Column(0);
 
-        if self[Column(self.len() - 1)].flags.contains(Flags::WRAPLINE) {
-            return Column(self.len());
-        }
-
+        // NOTE(tecfu): walk back over trailing blank cells even on wrapped lines so
+        // that copied text from wrapped rows does not carry terminal margin padding.
         for (index, cell) in self[..].iter().rev().enumerate() {
             if cell.c != ' '
                 || cell.extra.as_ref().map(|extra| extra.zerowidth.is_empty()) == Some(false)
@@ -319,6 +317,10 @@ mod tests {
         let mut row = Row::<Cell>::new(10);
         row[Column(9)].flags.insert(super::Flags::WRAPLINE);
 
-        assert_eq!(row.line_length(), Column(10));
+        // Wrapped lines are also trimmed of trailing blank cells.
+        assert_eq!(row.line_length(), Column(0));
+
+        row[Column(4)].c = 'a';
+        assert_eq!(row.line_length(), Column(5));
     }
 }
