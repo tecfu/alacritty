@@ -442,7 +442,17 @@ impl Window {
     pub fn set_ime_inhibitor(&mut self, inhibitor: ImeInhibitor, inhibit: bool) {
         if self.ime_inhibitor.contains(inhibitor) != inhibit {
             self.ime_inhibitor.set(inhibitor, inhibit);
-            self.window.set_ime_allowed(self.ime_inhibitor.is_empty());
+            self.set_ime_allowed(self.ime_inhibitor.is_empty());
+        }
+    }
+
+    /// Allow/disallow IME input.
+    // NOTE(tecfu): Skip runtime IME manipulation on X11 since it breaks some IMEs
+    // like fcitx5; keyboard input dies after leaving Vi mode otherwise.
+    // Regression introduced upstream by #8747, see issue #8907.
+    pub fn set_ime_allowed(&self, allowed: bool) {
+        if !self.is_x11 {
+            self.window.set_ime_allowed(allowed);
         }
     }
 
