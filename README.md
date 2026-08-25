@@ -17,6 +17,12 @@
 > cargo install --git https://github.com/tecfu/alacritty --branch tecfu-trim-selection alacritty
 > ```
 >
+> And for installing on ioT devices like Radxa 5b:
+>
+> ```sh
+> cargo install --git https://github.com/tecfu/alacritty --branch tecfu-trim-selection alacritty -j 2
+> ```
+>
 > Patches on top of upstream `master`:
 > - Trim trailing blank cells from wrapped lines when copying (no margin
 >   whitespace / spurious spaces at soft-wrap joins in copied selections)
