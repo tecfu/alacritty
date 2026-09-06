@@ -11,16 +11,16 @@
 
 ## About
 
-> **tecfu fork** — install this branch with:
+> **tecfu fork** — install with:
 >
 > ```sh
-> cargo install --git https://github.com/tecfu/alacritty --branch tecfu-trim-selection alacritty
+> cargo install --git https://github.com/tecfu/alacritty alacritty
 > ```
 >
 > And for installing on ioT devices like Radxa 5b:
 >
 > ```sh
-> cargo install --git https://github.com/tecfu/alacritty --branch tecfu-trim-selection alacritty -j 2
+> cargo install --git https://github.com/tecfu/alacritty alacritty -j 2
 > ```
 >
 > Patches on top of upstream `master`:
